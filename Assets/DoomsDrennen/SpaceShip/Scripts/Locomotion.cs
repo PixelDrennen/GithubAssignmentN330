@@ -5,8 +5,14 @@ using UnityEngine;
 public class Locomotion : MonoBehaviour
 {
     private Rigidbody rb;
-    public float moveSpeed = 5f;
+    public float acceleration = 5f;
+    public float deceleration = 5f;
     public float turnSpeed = 5f;
+
+    public float currentSpeed = 0f;
+
+    public float maxSpeed = 10f;
+
 
     private void Awake()
     {
@@ -21,7 +27,15 @@ public class Locomotion : MonoBehaviour
 
     private void Move()
     {
-        rb.velocity = transform.root.forward * moveSpeed * InputManager.Instance.moveValue;
+        currentSpeed += Time.deltaTime * InputManager.Instance.moveValue * acceleration;
+        currentSpeed = Mathf.Clamp(currentSpeed, 0f, maxSpeed);
+
+        rb.velocity = transform.root.forward * currentSpeed;
+
+        if (InputManager.Instance.moveValue <= 0)
+        {
+            currentSpeed -= Time.deltaTime * deceleration;
+        }
     }
 
     private void Turn()

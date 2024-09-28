@@ -13,6 +13,8 @@ public class InputManager : MonoBehaviour
     public float moveValue = 0f;
     public float turnValue = 0f;
 
+    public bool isFiring = false;
+
     private void OnEnable()
     {
         if(controls == null) controls = new();
@@ -35,6 +37,14 @@ public class InputManager : MonoBehaviour
 
         controls.Keyboard.Turn.performed += OnTurn;
         controls.Keyboard.Turn.canceled += OnTurn;
+
+        controls.Keyboard.Fire.performed += OnFire;
+        controls.Keyboard.Fire.canceled += OnFire;
+    }
+
+    private void OnFire(InputAction.CallbackContext context)
+    {
+        isFiring = !isFiring;
     }
 
     private void OnMove(InputAction.CallbackContext context)
